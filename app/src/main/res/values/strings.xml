@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Theif Monitoring</string>
+
+
+    <string name="ok">Ok</string>
+    <string name="internet_connection_title">No Internet Connection</string>
+    <string name="no_inernet_dailog">Please Turn On your Internet Service.</string>
+</resources>
