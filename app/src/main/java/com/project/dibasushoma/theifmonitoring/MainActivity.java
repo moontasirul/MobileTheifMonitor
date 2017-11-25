@@ -1,8 +1,10 @@
 package com.project.dibasushoma.theifmonitoring;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
+import android.app.job.JobService;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -53,8 +55,13 @@ public class MainActivity extends AppCompatActivity implements ICheckData {
     private String deviceId;
     private Button btnCancelJob;
 
-    private boolean isPermissionGrant = false;
 
+    private JobScheduler jobScheduler;
+
+    private JobInfo jobInfo;
+
+    private boolean isPermissionGrant = false;
+    private boolean flag = false;
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -93,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements ICheckData {
         etConfirmVerifyCode = findViewById(R.id.et_confrm_verifyCode);
         etAnotherPhoneNumber = findViewById(R.id.et_aditional_phn_nuber);
         etEmail = findViewById(R.id.et_email);
-        swtActiveApp =findViewById(R.id.switch1);
+        swtActiveApp = findViewById(R.id.switch1);
 
         btnCancelJob = findViewById(R.id.btn_cencl_job);
 
@@ -113,12 +120,14 @@ public class MainActivity extends AppCompatActivity implements ICheckData {
         if (dataBaseHelper.checkUser(userName)) {
             mUser = dataBaseHelper.getData(userName);
         }
-        if(mUser.getEmailId()!=null){
+
+      //  swtActiveApp.setVisibility(View.VISIBLE);
+        if (mUser.getEmailId() != null) {
             btnActiveApp.setText("User Info Stored");
-        }else {
+        } else {
+            swtActiveApp.setVisibility(View.GONE);
             return;
         }
-
 
     }
 
@@ -130,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements ICheckData {
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 finish();
+
             }
         });
 
@@ -172,12 +182,12 @@ public class MainActivity extends AppCompatActivity implements ICheckData {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                if(isChecked){
+                if (isChecked) {
                     scheduleJob();
-                }else {
-                    JobScheduler jobScheduler = (JobScheduler) getSystemService(
-                            Context.JOB_SCHEDULER_SERVICE);
+                } else {
+                    JobScheduler jobScheduler = (JobScheduler) getSystemService( Context.JOB_SCHEDULER_SERVICE);
                     jobScheduler.cancelAll();
+
                 }
 
             }
@@ -234,7 +244,6 @@ public class MainActivity extends AppCompatActivity implements ICheckData {
 
             Toast.makeText(this, "Failed", Toast.LENGTH_LONG).show();
         }
-
 
 
     }
@@ -305,12 +314,16 @@ public class MainActivity extends AppCompatActivity implements ICheckData {
     }
 
 
+    @SuppressLint("WrongConstant")
     private void scheduleJob() {
-        final JobScheduler jobScheduler = (JobScheduler) getSystemService(
+
+        jobScheduler = (JobScheduler) getSystemService(
                 Context.JOB_SCHEDULER_SERVICE);
+
 
         // The JobService that we want to run
         final ComponentName name = new ComponentName(this, JobSchedulerService.class);
+
 
 
         // Schedule the job
@@ -321,7 +334,10 @@ public class MainActivity extends AppCompatActivity implements ICheckData {
 
             Toast.makeText(getApplicationContext(), "start job.....", Toast.LENGTH_LONG).show();
 
+
         }
+
+
 
     }
 
@@ -330,7 +346,7 @@ public class MainActivity extends AppCompatActivity implements ICheckData {
         final boolean isPersistent = true; // persist through boot
         final int networkType = JobInfo.NETWORK_TYPE_ANY; // Requires some sort of connectivity
 
-        final JobInfo jobInfo;
+        // final JobInfo jobInfo;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             jobInfo = new JobInfo.Builder(id, name)
@@ -345,6 +361,7 @@ public class MainActivity extends AppCompatActivity implements ICheckData {
                     .setPersisted(isPersistent)
                     .build();
         }
+
 
         return jobInfo;
     }
@@ -363,7 +380,7 @@ public class MainActivity extends AppCompatActivity implements ICheckData {
         retrieveData();
         String currentSIMID = UtilityFunctions.getSimID(getApplicationContext());
 
-        if(mUser.getUserSIMID()==null){
+        if (mUser.getUserSIMID() == null) {
             return;
         }
 
@@ -372,7 +389,6 @@ public class MainActivity extends AppCompatActivity implements ICheckData {
             sendEmail(mUser.getEmailId(), mUser.getUserDeviceId() + currentSIMID);
         }
     }
-
 
 
 }
