@@ -29,11 +29,12 @@ import android.widget.Toast;
 
 import com.project.dibasushoma.theifmonitoring.email_send.SendMail;
 
+import java.lang.ref.WeakReference;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity implements ICheckData {
+public class MainActivity extends AppCompatActivity  {
 
 
     private EditText etVerifyCode;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements ICheckData {
     private DataBaseHelper dataBaseHelper;
     private User mUser;
 
-    private String userName;
+    public String userName;
     private String deviceId;
     private Button btnCancelJob;
 
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements ICheckData {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    private int simID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +126,8 @@ public class MainActivity extends AppCompatActivity implements ICheckData {
       //  swtActiveApp.setVisibility(View.VISIBLE);
         if (mUser.getEmailId() != null) {
             btnActiveApp.setText("User Info Stored");
+            swtActiveApp.setVisibility(View.VISIBLE);
+           // swtActiveApp.setChecked(false);
         } else {
             swtActiveApp.setVisibility(View.GONE);
             return;
@@ -249,18 +253,6 @@ public class MainActivity extends AppCompatActivity implements ICheckData {
     }
 
 
-    /**
-     * Retrieve data from db
-     */
-    public void retrieveData() {
-        if (mUser == null) {
-            return;
-        }
-        if (dataBaseHelper.checkUser(userName)) {
-            mUser = dataBaseHelper.getData(userName);
-        }
-    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -304,7 +296,6 @@ public class MainActivity extends AppCompatActivity implements ICheckData {
             permissionGranted(false);
         }
 
-        checkData();
     }
 
     @Override
@@ -313,6 +304,10 @@ public class MainActivity extends AppCompatActivity implements ICheckData {
         finish();
     }
 
+
+    /**
+     * Background job scheduler method
+     */
 
     @SuppressLint("WrongConstant")
     private void scheduleJob() {
@@ -336,9 +331,6 @@ public class MainActivity extends AppCompatActivity implements ICheckData {
 
 
         }
-
-
-
     }
 
     private JobInfo getJobInfo(final int id, final long hour, final ComponentName name) {
@@ -375,20 +367,17 @@ public class MainActivity extends AppCompatActivity implements ICheckData {
         sm.execute();
     }
 
+
+
+
     @Override
-    public void checkData() {
-        retrieveData();
-        String currentSIMID = UtilityFunctions.getSimID(getApplicationContext());
-
-        if (mUser.getUserSIMID() == null) {
-            return;
-        }
-
-        if (!mUser.getUserSIMID().equalsIgnoreCase(currentSIMID)) {
-
-            sendEmail(mUser.getEmailId(), mUser.getUserDeviceId() + currentSIMID);
-        }
+    protected void onDestroy() {
+        super.onDestroy();
     }
+
+
+
+
 
 
 }

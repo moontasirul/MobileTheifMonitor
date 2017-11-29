@@ -25,6 +25,7 @@ public class JobSchedulerService extends JobService {
 
     private ICheckData iCheckData;
 
+
     @SuppressLint("StaticFieldLeak")
     @Override
     public boolean onStartJob(final JobParameters params) {
@@ -35,6 +36,16 @@ public class JobSchedulerService extends JobService {
             @Override
             protected void onPostExecute(String s) {
                 Log.i("checktest", s);
+
+//                final MainActivity mainActivity = new MainActivity();
+//
+//                mainActivity.runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mainActivity.checkDataNew();
+//                    }
+//                });
+
                 Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
 
                 jobFinished(params,false);
