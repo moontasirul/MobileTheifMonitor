@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MobileTheifMonitor.iml" filepath="$PROJECT_DIR$/MobileTheifMonitor.iml" />
+      <module fileurl="file://G:\projects\new\MobileTheifMonitor\MobileTheifMonitor.iml" filepath="G:\projects\new\MobileTheifMonitor\MobileTheifMonitor.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://G:\projects\new\MobileTheifMonitor\app\app.iml" filepath="G:\projects\new\MobileTheifMonitor\app\app.iml" />
     </modules>
   </component>
 </project>
