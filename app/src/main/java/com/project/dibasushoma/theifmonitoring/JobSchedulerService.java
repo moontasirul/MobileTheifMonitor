@@ -11,9 +11,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 
-/**
- * Created by DibaSushoma on 11/5/2017.
- */
 
 
 public class JobSchedulerService extends JobService {
@@ -29,6 +26,8 @@ public class JobSchedulerService extends JobService {
     @SuppressLint("StaticFieldLeak")
     @Override
     public boolean onStartJob(final JobParameters params) {
+
+        String userName = params.getExtras().getString("userName");
 
         myJobAsyntask = new MyJobAsyntask(){
 
@@ -51,7 +50,7 @@ public class JobSchedulerService extends JobService {
                 jobFinished(params,false);
             }
         };
-        myJobAsyntask.execute();
+        myJobAsyntask.execute(userName);
 
         return true;
     }

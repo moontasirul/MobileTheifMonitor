@@ -13,6 +13,7 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -340,19 +341,24 @@ public class MainActivity extends AppCompatActivity  {
 
         // final JobInfo jobInfo;
 
+        PersistableBundle bundle = new PersistableBundle();
+        bundle.putString("userName",userName);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             jobInfo = new JobInfo.Builder(id, name)
                     .setMinimumLatency(10000)
                     .setRequiredNetworkType(networkType)
                     .setPersisted(isPersistent)
+                    .setExtras(bundle)
                     .build();
         } else {
             jobInfo = new JobInfo.Builder(id, name)
                     .setPeriodic(10000)
                     .setRequiredNetworkType(networkType)
                     .setPersisted(isPersistent)
+                    .setExtras(bundle)
                     .build();
         }
+
 
 
         return jobInfo;

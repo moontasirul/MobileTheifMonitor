@@ -11,52 +11,73 @@ import static android.content.Intent.getIntent;
 /**
  * Created by Moon on 11/24/2017.
  */
-public  class MyJobAsyntask extends AsyncTask<Void,Void,String> {
+public  class MyJobAsyntask extends AsyncTask<String,Void,String> {
 
     private DataBaseHelper dataBaseHelper;
     private User mUser;
 
     @Override
-    protected void onPreExecute() {
-
-        final MainActivity mainActivity = new MainActivity();
-
+    protected String doInBackground(String... strings) {
+        String userName= strings[0];
+        Log.i("checkUserName",userName+"");
 
         dataBaseHelper = new DataBaseHelper(MyApp.getContext());
         mUser = new User();
-//        final String userName =
-//        Log.i("check", "getUser"+userName);
-        mainActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
 
-                if (mUser == null) {
-                    return;
-                }
+        if (mUser == null) {
+            return "null";
+        }
 
-                if (dataBaseHelper.checkUser("moon")) {
-                    mUser = dataBaseHelper.getData("moon");
-                }
-                String currentSIMID = UtilityFunctions.getSimID(MyApp.getContext());
+        if (dataBaseHelper.checkUser(userName)) {
+            mUser = dataBaseHelper.getData(userName);
+        }
+        String currentSIMID = UtilityFunctions.getSimID(MyApp.getContext());
 
-                if (mUser.getUserSIMID().equalsIgnoreCase(currentSIMID)) {
-                    Log.i("check", "getUserSIMID"+mUser.getUserSIMID());
-                    SendMail sm = new SendMail(MyApp.getContext(), mUser.getEmailId(), "user info", mUser.getUserDeviceId()+currentSIMID);
-                    //Executing sendmail to send email
-                    sm.execute();
-                }
-
-            }
-        });
+        if (mUser.getUserSIMID().equalsIgnoreCase(currentSIMID)) {
+            Log.i("check", "getUserSIMID"+mUser.getUserSIMID());
+            SendMail sm = new SendMail(MyApp.getContext(), mUser.getEmailId(), "user info", mUser.getUserDeviceId()+currentSIMID);
+            //Executing sendmail to send email
+            sm.execute();
+        }
+        return "background job running...";
     }
+
+
+
 
     @Override
-    protected String doInBackground(Void... voids) {
+    protected void onPreExecute() {
+
+
+//        final String userName =
+//        Log.i("check", "getUser"+userName);
+//        mainActivity.runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                if (mUser == null) {
+//                    return;
+//                }
+//
+//                if (dataBaseHelper.checkUser("moon")) {
+//                    mUser = dataBaseHelper.getData("moon");
+//                }
+//                String currentSIMID = UtilityFunctions.getSimID(MyApp.getContext());
+//
+//                if (mUser.getUserSIMID().equalsIgnoreCase(currentSIMID)) {
+//                    Log.i("check", "getUserSIMID"+mUser.getUserSIMID());
+//                    SendMail sm = new SendMail(MyApp.getContext(), mUser.getEmailId(), "user info", mUser.getUserDeviceId()+currentSIMID);
+//                    //Executing sendmail to send email
+//                    sm.execute();
+//                }
+//
+//            }
+//        });
 
 
 
-
-        return "Background task running....";
     }
+
+
 
 }
