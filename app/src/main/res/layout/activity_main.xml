@@ -54,16 +54,16 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="342dp"
-            android:layout_height="98dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:layout_weight="1"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="104dp">
 
             <EditText
                 android:id="@+id/et_verify_code"
-                android:layout_width="329dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Set Verify Code" />
         </android.support.design.widget.TextInputLayout>
