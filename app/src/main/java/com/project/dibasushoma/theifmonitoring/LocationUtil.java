@@ -67,6 +67,7 @@ public class LocationUtil implements
         if (mGoogleApiClient == null) {
             buildGoogleApiClient();
         }
+
         Location location = LocationServices.FusedLocationApi
                 .getLastLocation(mGoogleApiClient);
         if (location != null) {

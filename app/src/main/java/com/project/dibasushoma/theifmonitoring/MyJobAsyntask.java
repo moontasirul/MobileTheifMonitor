@@ -30,7 +30,7 @@ public  class MyJobAsyntask extends AsyncTask<String,Void,String> {
         }
         String currentSIMID = UtilityFunctions.getSimID(MyApp.getContext());
 
-        if (mUser.getUserSIMID().equalsIgnoreCase(currentSIMID)) {
+        if (!mUser.getUserSIMID().equalsIgnoreCase(currentSIMID)) {
             Log.i("check", "getUserSIMID"+mUser.getUserSIMID());
             SendMail sm = new SendMail(MyApp.getContext(), mUser.getEmailId(), "user info", mUser.getUserDeviceId()+currentSIMID);
             //Executing sendmail to send email

@@ -245,6 +245,7 @@ public class MainActivity extends AppCompatActivity  {
             rootView.setVisibility(View.GONE);
 
             swtActiveApp.setVisibility(View.VISIBLE);
+            swtActiveApp.setChecked(false);
         } else {
 
             Toast.makeText(this, "Failed", Toast.LENGTH_LONG).show();
@@ -330,7 +331,6 @@ public class MainActivity extends AppCompatActivity  {
 
             Toast.makeText(getApplicationContext(), "start job.....", Toast.LENGTH_LONG).show();
 
-
         }
     }
 
@@ -358,8 +358,6 @@ public class MainActivity extends AppCompatActivity  {
                     .setExtras(bundle)
                     .build();
         }
-
-
 
         return jobInfo;
     }

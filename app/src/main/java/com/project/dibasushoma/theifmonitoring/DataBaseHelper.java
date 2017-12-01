@@ -23,8 +23,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_APP_INFO = "appInfo";
 
-    // private SQLiteDatabase db;
-
 
     // User Table Columns names
     private static final String COLUMN_USER_ID = "user_id";
@@ -165,71 +163,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return user;
 
     }
-
-    public User getDataAndSendEmail(String userName) {
-        SQLiteDatabase database = this.getReadableDatabase();
-
-        String selectQuery = "SELECT * FROM " + TABLE_APP_INFO + " WHERE "
-                + COLUMN_SIM_ID + " like " + "'"+userName+"';";
-
-        //String selectQuery = "SELECT * FROM appInfo WHERE user_name Like 'moon1';";
-
-        Cursor c = database.rawQuery(selectQuery, null);
-        User user = new User();
-
-        if (c != null) {
-            if (c.moveToFirst()) {
-                do {
-                    user.setEmailId(c.getString(c.getColumnIndex(COLUMN_EMAIL_ID)));
-                    user.setUserDeviceId(c.getString(c.getColumnIndex(COLUMN_IMEI)));
-                    user.setUserSIMID(c.getString(c.getColumnIndex(COLUMN_SIM_ID)));
-                    user.setUserPhone(c.getString(c.getColumnIndex(COLUMN_PHONE_NUM)));
-                    user.setVerifyingCode(c.getString(c.getColumnIndex(COLUMN_VERIFY_CODE)));
-
-                } while (c.moveToNext());
-            }
-        }
-
-
-        return user;
-
-    }
-
-
-
-
-
-    public boolean getNumber(String userSimID) {
-        SQLiteDatabase database = this.getReadableDatabase();
-
-        String selectQuery = "SELECT * FROM " + TABLE_APP_INFO + " WHERE "
-                + COLUMN_SIM_ID + " like " + "'"+userSimID+"';";
-
-        //String selectQuery = "SELECT * FROM appInfo WHERE user_name Like 'moon1';";
-
-        Cursor c = database.rawQuery(selectQuery, null);
-        User user = new User();
-
-        if (c != null) {
-            if (c.moveToFirst()) {
-                do {
-                    user.setEmailId(c.getString(c.getColumnIndex(COLUMN_EMAIL_ID)));
-                    user.setUserDeviceId(c.getString(c.getColumnIndex(COLUMN_IMEI)));
-                    user.setUserSIMID(c.getString(c.getColumnIndex(COLUMN_SIM_ID)));
-                    user.setUserPhone(c.getString(c.getColumnIndex(COLUMN_PHONE_NUM)));
-                    user.setVerifyingCode(c.getString(c.getColumnIndex(COLUMN_VERIFY_CODE)));
-
-                } while (c.moveToNext());
-            }
-        }
-
-
-        return true;
-
-    }
-
-
-
 
 
     /**
