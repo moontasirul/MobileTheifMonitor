@@ -1,15 +1,19 @@
 package com.project.dibasushoma.theifmonitoring;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -20,6 +24,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -28,6 +33,8 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.List;
+import java.util.Locale;
 
 public class LocationUtil implements
         GoogleApiClient.ConnectionCallbacks,
@@ -37,46 +44,30 @@ public class LocationUtil implements
     public GoogleApiClient mGoogleApiClient;
 
     public LocationRequest mLocationRequest;
+    private FusedLocationProviderApi fusedLocationProviderApi;
 
     public String latitude;
     public String longitude;
-    private Context context;
     private Location location;
-    private FragmentActivity activity;
+    private Context activity;
 
 
-    public static final int REQUEST_CHECK_SETTINGS = 1;
+    public static final int REQUEST_CHECK_SETTINGS = 105;
+
+    public static final int REQUEST_CHECK_SETTINGS_ADDRESS = 106;
 
 
-    public LocationUtil(Context context, FragmentActivity activity) {
-        this.context = context;
+    public LocationUtil(Context activity) {
         this.activity = activity;
-        init();
     }
+
 
     public void init() {
+        mLocationRequest = getLocationRequest().create();
+        fusedLocationProviderApi = LocationServices.FusedLocationApi;
         buildGoogleApiClient();
-
     }
 
-    public void getLatLongFromGPSDevice() {
-
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        if (mGoogleApiClient == null) {
-            buildGoogleApiClient();
-        }
-
-        Location location = LocationServices.FusedLocationApi
-                .getLastLocation(mGoogleApiClient);
-        if (location != null) {
-            setLatitude(location.getLatitude() + "");
-            setLongitude(location.getLongitude() + "");
-
-            Log.i("LatLong", "LAT:" + getLatitude() + " LONG:" + getLongitude());
-        }
-    }
 
     /**
      * buildGoogleApiClient method is used to build GoogleApiClient.
@@ -97,9 +88,43 @@ public class LocationUtil implements
     }
 
 
+    private GoogleApiClient.Builder getGoogleClientBuilder() {
+        GoogleApiClient.Builder builder = new GoogleApiClient.Builder(activity)
+                .addApi(LocationServices.API);
+        return builder;
+    }
+
+    private LocationRequest getLocationRequest() {
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        return locationRequest;
+    }
+
+    public void disCannectGoogleClient() {
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    public void disCannectLocationRequest() {
+        if (mLocationRequest != null) {
+            mLocationRequest = null;
+        }
+    }
+
+
     @Override
     public void onConnected(Bundle bundle) {
-        getLatLongFromGPSDevice();
+        if (mGoogleApiClient.isConnected())
+            if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                return;
+            }
+            fusedLocationProviderApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
 
 
@@ -140,15 +165,43 @@ public class LocationUtil implements
 
     }
 
+    public void getLatLongFromGps() {
+        Log.i("getLatLongFromGps", "called");
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        Log.i("getLatLongFromGps", "called2");
+        if (mGoogleApiClient == null) {
+            buildGoogleApiClient();
+            Log.i("getLatLongFromGps", "called3");
+        }
+        Location location = LocationServices.FusedLocationApi
+                .getLastLocation(mGoogleApiClient);
+        if (location != null) {
+            Log.i("getLatLongFromGps", "called4");
+            setLocation(location);
+            setLatitude(location.getLatitude() + "");
+            setLongitude(location.getLongitude() + "");
+            Log.i("LatLong", "LAT:" + location.getLatitude() + " LONG:" + location.getLongitude());
+        }
+        Log.i("getLatLongFromGps", "called5");
+    }
 
-    /**
-     * Check the device Location Service is enable or disable
-     */
-    public void showEnableGpsDialog() {
-        if (!isLocationEnabled(context)) {
-            displayLocationSettingsRequest();
+    public void getLatLongFromAddress(String address) {
+        Geocoder geoCoder = new Geocoder(activity, Locale.getDefault());
+        try {
+            List<Address> addresses = geoCoder.getFromLocationName(address, 1);
+            if (addresses.size() > 0) {
+                setLatitude(addresses.get(0).getLatitude() + "");
+                setLongitude(addresses.get(0).getLongitude() + "");
+                Log.i("LatLong", "LAT:" + getLatitude() + " LONG:" + getLongitude());
+            }
+        } catch (Exception ee) {
+            ee.printStackTrace();
         }
     }
+
 
     public boolean isLocationEnabled(Context context) {
         int locationMode = 0;
@@ -173,28 +226,11 @@ public class LocationUtil implements
 
     }
 
-    protected synchronized GoogleApiClient.Builder getGoogleClientBuilder() {
-
-        GoogleApiClient.Builder builder = new GoogleApiClient.Builder(context)
-                .addApi(LocationServices.API);
-        return builder;
-    }
-
-    protected synchronized LocationRequest getLocationRequest() {
-        LocationRequest locationRequest = new LocationRequest();
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(5000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        return locationRequest;
-    }
-
     public void displayLocationSettingsRequest() {
-        Log.i("LocationSettingsRequest", "called");
-        mGoogleApiClient = getGoogleClientBuilder().build();
-        mGoogleApiClient.connect();
         mLocationRequest = getLocationRequest().create();
-
+        if (mGoogleApiClient == null) {
+            buildGoogleApiClient();
+        }
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(mLocationRequest);
         builder.setAlwaysShow(true);
 
@@ -209,7 +245,7 @@ public class LocationUtil implements
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
 
                         try {
-                            status.startResolutionForResult(activity, REQUEST_CHECK_SETTINGS);
+                            status.startResolutionForResult((Activity) activity, REQUEST_CHECK_SETTINGS);
                         } catch (IntentSender.SendIntentException e) {
 //                            Log.i("tag", "PendingIntent unable to execute request.");
                         }
@@ -222,6 +258,16 @@ public class LocationUtil implements
         });
     }
 
+
+    @Override
+    public void setLocation(@NonNull Location location) {
+        this.location = location;
+    }
+
+    @Override
+    public Location getLocation() {
+        return location;
+    }
 
     @Override
     public String getLatitude() {

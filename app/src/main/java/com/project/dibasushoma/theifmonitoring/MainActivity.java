@@ -73,25 +73,10 @@ public class MainActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        RunTimePermissionHandler.requestForAccessDeviceLocationAndPhoneState(this);
         initialView();
         setOnClick();
 
-
-//        ComponentName componentName = new ComponentName(this,JobSchedulerService.class);
-//        JobInfo.Builder builder = new JobInfo.Builder(JOB_ID,componentName);
-//
-//        builder.setPeriodic(5000);
-//        builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
-//        builder.setPersisted(true);
-//
-//
-//        mJobInfo = builder.build();
-//
-//        mJobScheduler =(JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-//
-//        mJobScheduler.schedule(mJobInfo);
-//        Toast.makeText(getApplicationContext(),"start job.....",Toast.LENGTH_LONG).show();
 
 
         show();
@@ -289,14 +274,14 @@ public class MainActivity extends AppCompatActivity  {
     public void onResume() {
         super.onResume();
         if (isPermissionGrant()) {
-            storeActiveAppInfo(userName, deviceId, UtilityFunctions.getSimID(getApplicationContext()),
-                    etVerifyCode.getText().toString().trim(),
-                    etConfirmVerifyCode.getText().toString().trim(),
-                    etAnotherPhoneNumber.getText().toString().trim(),
-                    etEmail.getText().toString().trim());
-
             permissionGranted(false);
         }
+
+//        storeActiveAppInfo(userName, deviceId, UtilityFunctions.getSimID(getApplicationContext()),
+//                etVerifyCode.getText().toString().trim(),
+//                etConfirmVerifyCode.getText().toString().trim(),
+//                etAnotherPhoneNumber.getText().toString().trim(),
+//                etEmail.getText().toString().trim());
 
     }
 

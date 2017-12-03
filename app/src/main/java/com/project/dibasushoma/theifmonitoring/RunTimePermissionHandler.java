@@ -185,5 +185,28 @@ public class RunTimePermissionHandler {
     }
 
 
+    public static boolean requestForAccessDeviceLocationAndPhoneState(FragmentActivity activity) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true;
+        }
+        if (ContextCompat.checkSelfPermission(activity, READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(activity, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(activity, ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            activity.requestPermissions(permissionsArray, 1);
+        }
+        return false;
+    }
+
+    /**
+     * Location permission array
+     */
+    private static String[] permissionsArray = new String[]{
+            READ_PHONE_STATE,
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.ACCESS_COARSE_LOCATION
+    };
+
 
 }

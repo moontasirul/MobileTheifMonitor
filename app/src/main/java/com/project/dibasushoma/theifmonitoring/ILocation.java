@@ -1,13 +1,21 @@
 package com.project.dibasushoma.theifmonitoring;
 
 
+import android.location.Location;
 import android.support.annotation.NonNull;
 
 /**
- * Created by user123 on 10/4/2017.
+ * To handel GPS location
+ * Created by moontasirul on 10/4/2017.
+ *
+ * @author Atom AP Ltd.
  */
 
 public interface ILocation {
+
+    void setLocation(@NonNull Location location);
+
+    Location getLocation();
 
     String getLatitude();
 
