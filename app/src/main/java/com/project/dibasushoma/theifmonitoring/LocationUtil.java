@@ -36,6 +36,10 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 import java.util.Locale;
 
+ /**
+ * This class is used for GPS locations
+ */
+
 public class LocationUtil implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,

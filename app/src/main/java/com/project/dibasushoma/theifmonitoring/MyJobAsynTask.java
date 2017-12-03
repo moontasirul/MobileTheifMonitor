@@ -2,15 +2,12 @@ package com.project.dibasushoma.theifmonitoring;
 
 import android.location.Location;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.project.dibasushoma.theifmonitoring.email_send.SendMail;
 
-/**
- * Created by Moon on 11/24/2017.
- */
-public  class MyJobAsyntask extends AsyncTask<String,Void,String> {
+
+public  class MyJobAsynTask extends AsyncTask<String,Void,String> {
 
     private DataBaseHelper dataBaseHelper;
     private User mUser;
@@ -18,6 +15,8 @@ public  class MyJobAsyntask extends AsyncTask<String,Void,String> {
 
     private String lat;
     private String lang;
+
+
 
     @Override
     protected String doInBackground(String... strings) {
@@ -50,12 +49,15 @@ public  class MyJobAsyntask extends AsyncTask<String,Void,String> {
 
         String locationUrl ="http://maps.google.com/maps?q="+lat+","+lang;
 
+
         String currentSIMID = UtilityFunctions.getSimID(MyApp.getContext());
 
-        if (mUser.getUserSIMID().equalsIgnoreCase(currentSIMID)) {
+
+        if (!mUser.getUserSIMID().equalsIgnoreCase(currentSIMID)) {
             Log.i("check", "getUserSIMID"+mUser.getUserSIMID());
+
             SendMail sm = new SendMail(MyApp.getContext(), mUser.getEmailId(),
-                    "user info", mUser.getUserDeviceId()+", "+currentSIMID+"Device Location: "+ locationUrl);
+                    "Mobile Thief Monitoring System ", mUser.getUserDeviceId()+", "+currentSIMID+"Device Location: "+ locationUrl);
             //Executing sendmail to send email
             sm.execute();
         }
@@ -79,12 +81,10 @@ public  class MyJobAsyntask extends AsyncTask<String,Void,String> {
         return mLocationUtil.getLongitude();
     }
 
+
+
     @Override
     protected void onPreExecute() {
-
-
-
-
 
     }
 

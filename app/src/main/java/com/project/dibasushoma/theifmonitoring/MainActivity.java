@@ -1,23 +1,17 @@
 package com.project.dibasushoma.theifmonitoring;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
-import android.app.job.JobService;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.wifi.WifiManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -30,10 +24,11 @@ import android.widget.Toast;
 
 import com.project.dibasushoma.theifmonitoring.email_send.SendMail;
 
-import java.lang.ref.WeakReference;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
+
+/**
+ *
+ */
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -46,7 +41,7 @@ public class MainActivity extends AppCompatActivity  {
     private LinearLayout rootView;
 
     private Button btnsubmit;
-    private Button btnActiveApp;
+    private Button btninsertInfoForActiveApp;
     private Button btnLogout;
     private Switch swtActiveApp;
 
@@ -94,11 +89,12 @@ public class MainActivity extends AppCompatActivity  {
 
         rootView = findViewById(R.id.linearLayout);
 
-        btnActiveApp = findViewById(R.id.btn_active_app);
+        btninsertInfoForActiveApp = findViewById(R.id.btn_active_app);
         btnsubmit = findViewById(R.id.btn_save);
         btnLogout = findViewById(R.id.btn_logout);
 
         userName = getIntent().getStringExtra("UserName");
+
         dataBaseHelper = new DataBaseHelper(this);
         mUser = new User();
     }
@@ -109,9 +105,9 @@ public class MainActivity extends AppCompatActivity  {
             mUser = dataBaseHelper.getData(userName);
         }
 
-      //  swtActiveApp.setVisibility(View.VISIBLE);
+
         if (mUser.getEmailId() != null) {
-            btnActiveApp.setText("User Info Stored");
+            btninsertInfoForActiveApp.setText("User Info Stored");
             swtActiveApp.setVisibility(View.VISIBLE);
            // swtActiveApp.setChecked(false);
         } else {
@@ -133,7 +129,7 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
-        btnActiveApp.setOnClickListener(new View.OnClickListener() {
+        btninsertInfoForActiveApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -141,7 +137,6 @@ public class MainActivity extends AppCompatActivity  {
                 deviceId = UtilityFunctions.getDeviceId(getApplicationContext());
                 Log.i("check data", userName + " " + deviceId);
                 rootView.setVisibility(View.VISIBLE);
-
 
             }
         });
@@ -155,7 +150,7 @@ public class MainActivity extends AppCompatActivity  {
                         etAnotherPhoneNumber.getText().toString().trim(),
                         etEmail.getText().toString().trim());
 
-                btnActiveApp.setText("User Info Stored");
+                btninsertInfoForActiveApp.setText("User Info Stored");
             }
         });
 
@@ -236,7 +231,6 @@ public class MainActivity extends AppCompatActivity  {
             Toast.makeText(this, "Failed", Toast.LENGTH_LONG).show();
         }
 
-
     }
 
 
@@ -246,6 +240,9 @@ public class MainActivity extends AppCompatActivity  {
         super.onActivityResult(requestCode, resultCode, data);
         onActivityResult(requestCode, resultCode, data);
     }
+
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -307,7 +304,6 @@ public class MainActivity extends AppCompatActivity  {
         final ComponentName name = new ComponentName(this, JobSchedulerService.class);
 
 
-
         // Schedule the job
         final int result = jobScheduler.schedule(getJobInfo(123, 1, name));
 
@@ -318,6 +314,7 @@ public class MainActivity extends AppCompatActivity  {
 
         }
     }
+
 
     private JobInfo getJobInfo(final int id, final long hour, final ComponentName name) {
         final long interval = TimeUnit.HOURS.toMillis(hour); // run every hour
@@ -330,7 +327,7 @@ public class MainActivity extends AppCompatActivity  {
         bundle.putString("userName",userName);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             jobInfo = new JobInfo.Builder(id, name)
-                    .setMinimumLatency(10000)
+                    .setMinimumLatency(40000)
                     .setRequiredNetworkType(networkType)
                     .setPersisted(isPersistent)
                     .setExtras(bundle)
@@ -347,6 +344,13 @@ public class MainActivity extends AppCompatActivity  {
         return jobInfo;
     }
 
+
+
+    /**
+     * This method does not use in any where........ till now
+     * @param email
+     * @param message
+     */
     private void sendEmail(String email, String message) {
         Log.i("sendEmail", "called");
         //Creating SendMail object

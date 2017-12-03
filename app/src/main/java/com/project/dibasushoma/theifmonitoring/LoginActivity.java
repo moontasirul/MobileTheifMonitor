@@ -10,6 +10,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * This is a activity class, which is act for all login UI
+ * and login related background
+ * process
+ */
+
 public class LoginActivity extends AppCompatActivity {
 
     private TextView tvRegister;
@@ -29,16 +35,23 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * initialize all UI elements
+     */
     private void initialView() {
-        tvRegister = (TextView) findViewById(R.id.tv_register);
-        etUserName = (EditText) findViewById(R.id.userId);
-        etUserPassword = (EditText) findViewById(R.id.user_password);
-        btnLogin = (Button) findViewById(R.id.btn_login);
+        tvRegister = findViewById(R.id.tv_register);
+        etUserName = findViewById(R.id.userId);
+        etUserPassword =  findViewById(R.id.user_password);
+        btnLogin =  findViewById(R.id.btn_login);
         databaseHelper = new DataBaseHelper(this);
-
     }
 
+
+
+
+    /**
+     * set  Click Listener for all button
+     */
     private void setOnClick() {
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +70,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Get user info from UI and check validity the get data form database...
+     * if user is valid then transfer to the next activity otherwise show error
+     * @param userName
+     * @param password
+     */
     private void getUserAndEntry(String userName, String password){
         if(userName == null && TextUtils.isEmpty(userName)){
             etUserName.setError("User Name Empty");
@@ -70,9 +89,8 @@ public class LoginActivity extends AppCompatActivity {
             Intent accountsIntent = new Intent(this, MainActivity.class);
             accountsIntent.putExtra("UserName",userName);
             startActivity(accountsIntent);
-            Toast.makeText(this, "Welcome", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Welcome "+ userName, Toast.LENGTH_LONG).show();
             onBackPressed();
-
 
         } else {
             Toast.makeText(this, "Wrong User Name or Password", Toast.LENGTH_LONG).show();

@@ -8,7 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-
+/**
+ * This is database helper class,
+ * By this handler class we used to handle all dataBase operations
+ */
 public class DataBaseHelper extends SQLiteOpenHelper {
 
 

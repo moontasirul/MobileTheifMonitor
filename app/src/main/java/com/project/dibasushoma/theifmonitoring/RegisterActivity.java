@@ -30,11 +30,11 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private void initialView() {
-        etUserName = (EditText) findViewById(R.id.user_name);
-        etConPassword = (EditText) findViewById(R.id.confirm_Password);
-        etUserPassword = (EditText) findViewById(R.id.user_password);
+        etUserName =  findViewById(R.id.user_name);
+        etConPassword =  findViewById(R.id.confirm_Password);
+        etUserPassword = findViewById(R.id.user_password);
 
-        btnRegister = (Button) findViewById(R.id.btn_registration);
+        btnRegister = findViewById(R.id.btn_registration);
 
         databaseHelper = new DataBaseHelper(this);
         user = new User();
@@ -62,7 +62,6 @@ public class RegisterActivity extends AppCompatActivity {
             // Toast to show success message that record saved successfully
             Toast.makeText(this, "Registration successful", Toast.LENGTH_LONG).show();
             emptyInputEditText();
-
 
         } else {
 

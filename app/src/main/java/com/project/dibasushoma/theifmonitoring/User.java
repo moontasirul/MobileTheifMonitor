@@ -24,7 +24,6 @@ public class User implements Serializable{
 
     private String userSIMID;
 
-
     private double userLat;
 
     private double userLang;

@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
  * To handel GPS location
  * Created by moontasirul on 10/4/2017.
  *
- * @author Atom AP Ltd.
+ * @author
  */
 
 public interface ILocation {

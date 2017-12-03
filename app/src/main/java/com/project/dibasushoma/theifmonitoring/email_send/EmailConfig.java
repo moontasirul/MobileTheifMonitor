@@ -6,6 +6,6 @@ package com.project.dibasushoma.theifmonitoring.email_send;
 
 public class EmailConfig {
 
-    public static final String EMAIL ="info.joykoly@gmail.com";
-    public static final String PASSWORD ="BD82468246";
+    public static final String EMAIL ="mobile.thiefmonitor@gmail.com";
+    public static final String PASSWORD ="thief123456";
 }
