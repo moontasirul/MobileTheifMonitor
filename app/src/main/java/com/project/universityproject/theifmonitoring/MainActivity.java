@@ -1,4 +1,4 @@
-package com.project.dibasushoma.theifmonitoring;
+package com.project.universityproject.theifmonitoring;
 
 import android.annotation.SuppressLint;
 import android.app.job.JobInfo;
@@ -22,7 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.project.dibasushoma.theifmonitoring.email_send.SendMail;
+import com.project.universityproject.theifmonitoring.email_send.SendMail;
 
 import java.util.concurrent.TimeUnit;
 

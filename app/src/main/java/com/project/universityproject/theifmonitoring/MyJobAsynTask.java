@@ -1,10 +1,10 @@
-package com.project.dibasushoma.theifmonitoring;
+package com.project.universityproject.theifmonitoring;
 
 import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.project.dibasushoma.theifmonitoring.email_send.SendMail;
+import com.project.universityproject.theifmonitoring.email_send.SendMail;
 
 
 public  class MyJobAsynTask extends AsyncTask<String,Void,String> {

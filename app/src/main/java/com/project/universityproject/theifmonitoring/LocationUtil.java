@@ -1,4 +1,4 @@
-package com.project.dibasushoma.theifmonitoring;
+package com.project.universityproject.theifmonitoring;
 
 import android.Manifest;
 import android.app.Activity;
@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;

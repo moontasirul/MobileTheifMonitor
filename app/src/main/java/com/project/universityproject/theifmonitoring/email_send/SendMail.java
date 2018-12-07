@@ -1,8 +1,9 @@
-package com.project.dibasushoma.theifmonitoring.email_send;
+package com.project.universityproject.theifmonitoring.email_send;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.Properties;
@@ -54,6 +55,7 @@ public class SendMail extends AsyncTask<Void,Void,Void> {
         //Dismissing the progress dialog
      //   progressDialog.dismiss();
         //Showing a success message
+        Log.i("checkMail: ", "send..");
         Toast.makeText(context,"Message Sent",Toast.LENGTH_LONG).show();
     }
 

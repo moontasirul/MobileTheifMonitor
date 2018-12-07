@@ -1,4 +1,4 @@
-package com.project.dibasushoma.theifmonitoring;
+package com.project.universityproject.theifmonitoring;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;

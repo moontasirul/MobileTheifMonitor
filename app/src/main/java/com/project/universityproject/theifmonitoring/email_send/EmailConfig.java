@@ -1,4 +1,4 @@
-package com.project.dibasushoma.theifmonitoring.email_send;
+package com.project.universityproject.theifmonitoring.email_send;
 
 /**
  * Created by DibaSushoma on 11/17/2017.
