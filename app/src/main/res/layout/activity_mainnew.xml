@@ -37,16 +37,15 @@
 
     <LinearLayout
         android:layout_width="361dp"
-        android:layout_height="380dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/btn_active_app"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="18dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        tools:layout_editor_absoluteX="16dp"
         app:layout_constraintHorizontal_bias="1.0"
         android:id="@+id/linearLayout"
         android:weightSum="1">
@@ -57,26 +56,22 @@
             android:layout_height="0dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="104dp">
+            android:layout_weight=".20">
 
             <EditText
                 android:id="@+id/et_verify_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Set Verify Code"
-                android:inputType="number"/>
+                android:inputType="number" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="342dp"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight=".20"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="15dp"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="169dp">
+            android:layout_marginLeft="15dp">
 
             <EditText
                 android:id="@+id/et_confrm_verifyCode"
@@ -88,11 +83,10 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="341dp"
-            android:layout_height="50dp"
+            android:layout_height="0dp"
+            android:layout_weight=".20"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="15dp"
-            tools:layout_editor_absoluteX="17dp"
-            tools:layout_editor_absoluteY="232dp">
+            android:layout_marginLeft="15dp">
 
             <EditText
                 android:id="@+id/et_aditional_phn_nuber"
@@ -104,11 +98,10 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="340dp"
-            android:layout_height="50dp"
+            android:layout_height="0dp"
+            android:layout_weight=".20"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="15dp"
-            tools:layout_editor_absoluteX="19dp"
-            tools:layout_editor_absoluteY="289dp"
             android:id="@+id/textInputLayout6">
 
             <EditText
@@ -119,26 +112,39 @@
                 android:hint="Email Id" />
         </android.support.design.widget.TextInputLayout>
 
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_width="124dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:text="Submit"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout6"
-            tools:layout_editor_absoluteX="130dp" />
 
 
-        <Button
-            android:id="@+id/btn_cencl_job"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Cancel"
-            android:layout_gravity="center"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-            tools:layout_editor_absoluteX="16dp" />
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".20"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Submit"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout6" />
+
+
+            <Button
+                android:id="@+id/btn_cencl_job"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:layout_gravity="center"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        </LinearLayout>
+
+
     </LinearLayout>
 
 
