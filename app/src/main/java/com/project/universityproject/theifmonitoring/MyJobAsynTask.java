@@ -55,7 +55,7 @@ public  class MyJobAsynTask extends AsyncTask<String,Void,String> {
         final String currentSIMID = UtilityFunctions.getSimID(MyApp.getContext());
 
 
-        if (mUser.getUserSIMID().equalsIgnoreCase(currentSIMID)) {
+        if (!mUser.getUserSIMID().equalsIgnoreCase(currentSIMID)) {
             Log.i("check", "getUserSIMID"+mUser.getUserSIMID());
 
 
