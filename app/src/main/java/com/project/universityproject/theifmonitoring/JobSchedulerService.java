@@ -3,8 +3,14 @@ package com.project.universityproject.theifmonitoring;
 import android.annotation.SuppressLint;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.support.v4.app.JobIntentService;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
+
+import java.lang.ref.WeakReference;
 
 
 /**
@@ -20,11 +26,14 @@ public class JobSchedulerService extends JobService {
 
     private MyJobAsynTask myJobAsynTask;
 
+
+
+
     @SuppressLint("StaticFieldLeak")
     @Override
     public boolean onStartJob(final JobParameters params) {
-
         String userName = params.getExtras().getString("userName");
+
 
         myJobAsynTask = new MyJobAsynTask(){
 
@@ -34,13 +43,13 @@ public class JobSchedulerService extends JobService {
                 Log.i("checktest", s);
 
                 Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+                jobFinished(params,true);
 
-                jobFinished(params,false);
             }
         };
 
         myJobAsynTask.execute(userName);
-
+        jobFinished(params,true);
         return true;
     }
 
@@ -48,6 +57,6 @@ public class JobSchedulerService extends JobService {
     public boolean onStopJob(final JobParameters params) {
         myJobAsynTask.cancel(true);
 
-        return false;
+        return true;
     }
 }
