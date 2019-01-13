@@ -4,6 +4,8 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.project.universityproject.theifmonitoring.email_send.EmailConfig;
+import com.project.universityproject.theifmonitoring.email_send.GMailSender;
 import com.project.universityproject.theifmonitoring.email_send.SendMail;
 
 
@@ -47,19 +49,43 @@ public  class MyJobAsynTask extends AsyncTask<String,Void,String> {
 
 
 
-        String locationUrl ="http://maps.google.com/maps?q="+lat+","+lang;
+        final String locationUrl ="http://maps.google.com/maps?q="+lat+","+lang;
 
 
-        String currentSIMID = UtilityFunctions.getSimID(MyApp.getContext());
+        final String currentSIMID = UtilityFunctions.getSimID(MyApp.getContext());
 
 
         if (!mUser.getUserSIMID().equalsIgnoreCase(currentSIMID)) {
             Log.i("check", "getUserSIMID"+mUser.getUserSIMID());
 
-            SendMail sm = new SendMail(MyApp.getContext(), mUser.getEmailId(),
-                    "Mobile Thief Monitoring System ", mUser.getUserDeviceId()+", "+currentSIMID+"Device Location: "+ locationUrl);
-            //Executing sendmail to send email
-            sm.execute();
+
+            // older version .........................................................
+//            SendMail sm = new SendMail(MyApp.getContext(), mUser.getEmailId(),
+//                    "Mobile Thief Monitoring System ", mUser.getUserDeviceId()+", "+currentSIMID+"Device Location: "+ locationUrl);
+//            //Executing sendmail to send email
+//            sm.execute();
+
+
+
+            new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+                    try {
+                        GMailSender sender = new GMailSender(EmailConfig.EMAIL,
+                                EmailConfig.PASSWORD);
+
+                        Log.i("SendMail", sender.toString());
+                        sender.sendMail("Mobile Thief Monitoring System ", mUser.getUserDeviceId()+", "+currentSIMID+"Device Location: "+ locationUrl,
+                                EmailConfig.EMAIL, mUser.getEmailId());
+
+
+                    } catch (Exception e) {
+                        Log.e("SendMail", e.getMessage(), e);
+                    }
+                }
+
+            }).start();
         }
         return "background job running...";
     }
