@@ -28,13 +28,18 @@ import com.project.universityproject.theifmonitoring.email_send.SendMail;
 
 import java.util.concurrent.TimeUnit;
 
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+
 /**
  *
  */
 
 public class MainActivity extends AppCompatActivity {
 
-
+    public static final String KEY_USER_NAME = "user_name";
     private EditText etVerifyCode;
     private EditText etConfirmVerifyCode;
     private EditText etAnotherPhoneNumber;
@@ -169,11 +174,12 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if (isChecked) {
-                    scheduleJob();
+                    // scheduleJob();
+                    startBackgroundWork();
                 } else {
-                    JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
-                    jobScheduler.cancelAll();
-
+//                    JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+//                    jobScheduler.cancelAll();
+                    WorkManager.getInstance().cancelAllWork();
                 }
 
             }
@@ -349,6 +355,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return jobInfo;
+    }
+
+
+    private void startBackgroundWork() {
+
+        Data data = new Data.Builder()
+                .putString(KEY_USER_NAME, userName)
+                .build();
+
+
+        PeriodicWorkRequest worker = new PeriodicWorkRequest.Builder(MyWorker.class, 10000, TimeUnit.MILLISECONDS)
+                .setConstraints(Constraints.NONE)
+                .build();
+
+        WorkManager.getInstance().enqueue(worker);
     }
 
 
