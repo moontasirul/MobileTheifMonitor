@@ -1,6 +1,7 @@
 package com.project.universityproject.theifmonitoring;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
@@ -11,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.JobIntentService;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -30,7 +32,7 @@ import java.util.concurrent.TimeUnit;
  *
  */
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
 
 
     private EditText etVerifyCode;
@@ -73,7 +75,6 @@ public class MainActivity extends AppCompatActivity  {
         setOnClick();
 
 
-
         show();
     }
 
@@ -109,7 +110,7 @@ public class MainActivity extends AppCompatActivity  {
         if (mUser.getEmailId() != null) {
             btninsertInfoForActiveApp.setText("User Info Stored");
             swtActiveApp.setVisibility(View.VISIBLE);
-           // swtActiveApp.setChecked(false);
+            // swtActiveApp.setChecked(false);
         } else {
             swtActiveApp.setVisibility(View.GONE);
             return;
@@ -170,8 +171,7 @@ public class MainActivity extends AppCompatActivity  {
                 if (isChecked) {
                     scheduleJob();
                 } else {
-                    JobScheduler jobScheduler = (JobScheduler) getSystemService( Context.JOB_SCHEDULER_SERVICE);
-
+                    JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
                     jobScheduler.cancelAll();
 
                 }
@@ -235,14 +235,11 @@ public class MainActivity extends AppCompatActivity  {
     }
 
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         onActivityResult(requestCode, resultCode, data);
     }
-
-
 
 
     @Override
@@ -297,8 +294,7 @@ public class MainActivity extends AppCompatActivity  {
     @SuppressLint("WrongConstant")
     private void scheduleJob() {
 
-        jobScheduler = (JobScheduler) getSystemService(
-                Context.JOB_SCHEDULER_SERVICE);
+        jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
 
 
         // The JobService that we want to run
@@ -306,7 +302,15 @@ public class MainActivity extends AppCompatActivity  {
 
 
         // Schedule the job
-        final int result = jobScheduler.schedule(getJobInfo(123, 1, name));
+        final int result;
+        result = jobScheduler.schedule(getJobInfo(123, 1, name));
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            result= jobScheduler.enqueue(getJobInfo(123, 1, name),null);
+//        }else {
+//            result =  jobScheduler.schedule(getJobInfo(123, 1, name));
+//        }
+
 
         // If successfully scheduled, log this thing
         if (result == JobScheduler.RESULT_SUCCESS) {
@@ -325,15 +329,17 @@ public class MainActivity extends AppCompatActivity  {
         // final JobInfo jobInfo;
 
         PersistableBundle bundle = new PersistableBundle();
-        bundle.putString("userName",userName);
+        bundle.putString("userName", userName);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Log.i("checkDevice", "called in nugat");
             jobInfo = new JobInfo.Builder(id, name)
-                    .setMinimumLatency(40000)
-                    .setRequiredNetworkType(networkType)
-                    .setPersisted(isPersistent)
                     .setExtras(bundle)
+                    .setMinimumLatency(5000)
+                    .setOverrideDeadline(1000 * 50)
+                    .setRequiredNetworkType(networkType)
                     .build();
         } else {
+            Log.i("checkDevice", "called in lower");
             jobInfo = new JobInfo.Builder(id, name)
                     .setPeriodic(10000)
                     .setRequiredNetworkType(networkType)
@@ -346,9 +352,9 @@ public class MainActivity extends AppCompatActivity  {
     }
 
 
-
     /**
      * This method does not use in any where........ till now
+     *
      * @param email
      * @param message
      */
@@ -360,18 +366,5 @@ public class MainActivity extends AppCompatActivity  {
         //Executing sendmail to send email
         sm.execute();
     }
-
-
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-
-
-
-
 
 }
