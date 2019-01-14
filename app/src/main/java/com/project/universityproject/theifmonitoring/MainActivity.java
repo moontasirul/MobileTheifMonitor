@@ -171,6 +171,7 @@ public class MainActivity extends AppCompatActivity  {
                     scheduleJob();
                 } else {
                     JobScheduler jobScheduler = (JobScheduler) getSystemService( Context.JOB_SCHEDULER_SERVICE);
+
                     jobScheduler.cancelAll();
 
                 }

@@ -23,6 +23,8 @@ public  class MyJobAsynTask extends AsyncTask<String,Void,String> {
     @Override
     protected String doInBackground(String... strings) {
         String userName= strings[0];
+
+        Log.i("check_banckgroundJob","called");
         Log.i("checkUserName",userName+"");
 
         dataBaseHelper = new DataBaseHelper(MyApp.getContext());
@@ -55,7 +57,7 @@ public  class MyJobAsynTask extends AsyncTask<String,Void,String> {
         final String currentSIMID = UtilityFunctions.getSimID(MyApp.getContext());
 
 
-        if (!mUser.getUserSIMID().equalsIgnoreCase(currentSIMID)) {
+        if (mUser.getUserSIMID().equalsIgnoreCase(currentSIMID)) {
             Log.i("check", "getUserSIMID"+mUser.getUserSIMID());
 
 
