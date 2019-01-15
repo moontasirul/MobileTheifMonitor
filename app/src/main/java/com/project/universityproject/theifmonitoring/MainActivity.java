@@ -174,12 +174,14 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if (isChecked) {
-                    // scheduleJob();
+                   // scheduleJob();
+
                     startBackgroundWork();
                 } else {
 //                    JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
 //                    jobScheduler.cancelAll();
-                    WorkManager.getInstance().cancelAllWork();
+
+                  WorkManager.getInstance().cancelAllWork();
                 }
 
             }
@@ -311,13 +313,6 @@ public class MainActivity extends AppCompatActivity {
         final int result;
         result = jobScheduler.schedule(getJobInfo(123, 1, name));
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            result= jobScheduler.enqueue(getJobInfo(123, 1, name),null);
-//        }else {
-//            result =  jobScheduler.schedule(getJobInfo(123, 1, name));
-//        }
-
-
         // If successfully scheduled, log this thing
         if (result == JobScheduler.RESULT_SUCCESS) {
 
@@ -364,12 +359,14 @@ public class MainActivity extends AppCompatActivity {
                 .putString(KEY_USER_NAME, userName)
                 .build();
 
+        PeriodicWorkRequest.Builder workBuilder =
+                new PeriodicWorkRequest.Builder(MyWorker.class, 15,
+                        TimeUnit.SECONDS);
 
-        PeriodicWorkRequest worker = new PeriodicWorkRequest.Builder(MyWorker.class, 10000, TimeUnit.MILLISECONDS)
-                .setConstraints(Constraints.NONE)
-                .build();
-
-        WorkManager.getInstance().enqueue(worker);
+        PeriodicWorkRequest periodicWorkRequest = workBuilder
+                                                 .setInputData(data)
+                                                 .build();
+        WorkManager.getInstance().enqueue(periodicWorkRequest);
     }
 
 

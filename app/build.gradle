@@ -38,12 +38,15 @@ dependencies {
     implementation files('libs/additionnal.jar')
     implementation files('libs/activation.jar')
 
-    def work_version = "1.0.0-beta01"
+   // def work_version = "1.0.0-beta01"
+
+
+    def work_version = "1.0.0-alpha06"
 
     implementation "android.arch.work:work-runtime:$work_version" // use -ktx for Kotlin+Coroutines
 
     // optional - RxJava2 support
-    implementation "android.arch.work:work-rxjava2:$work_version"
+   //  implementation "android.arch.work:work-rxjava2:$work_version"
 
     // optional - Test helpers
     androidTestImplementation "android.arch.work:work-testing:$work_version"
