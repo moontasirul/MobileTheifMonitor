@@ -341,7 +341,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Log.i("checkDevice", "called in lower");
             jobInfo = new JobInfo.Builder(id, name)
-                    .setPeriodic(10000)
+                    .setPeriodic(5000)
                     .setRequiredNetworkType(networkType)
                     .setPersisted(isPersistent)
                     .setExtras(bundle)

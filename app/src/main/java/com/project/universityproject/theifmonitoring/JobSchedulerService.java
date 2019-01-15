@@ -57,6 +57,6 @@ public class JobSchedulerService extends JobService {
     public boolean onStopJob(final JobParameters params) {
         myJobAsynTask.cancel(true);
 
-        return true;
+        return false;
     }
 }
